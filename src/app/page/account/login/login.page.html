@@ -1,0 +1,51 @@
+<ion-content [fullscreen]="true">
+  <div  class="ion-app-login-header">
+    <div class="ion-app-logo">
+    <ion-avatar class="ion-app-logo">
+      <img alt="liteSoft application logo" src="assets/img/litesoft-02.png" />
+    </ion-avatar></div>
+  </div>
+  <div class="container">
+    <h1 class="heading">تسجيل الدخول<br /><br /></h1>
+    <p class="para">  التطبيق مقدم  من شركة<br> لايت سوفت</p>
+    <form [formGroup]="loginFormGroup">
+      <ion-item lines="none" class="ion-item">
+        <fieldset  class="input-item">
+          <legend>اسم المستخدم</legend> 
+          <ion-input formControlName="UName"  type="text" placeholder="ادخل اسم المستخدم"></ion-input>
+        </fieldset>
+  
+      </ion-item>
+      <div class="error-validation" *ngIf="loginFormGroup.get('UName')?.hasError('required') && loginFormGroup.get('UName')?.touched">
+        <p>اسم المستخدم مطلوب</p>
+      </div>
+  
+      <ion-item lines="none" class="ion-item">
+        <fieldset  class="input-item">
+          <legend> رقم الفرع</legend> 
+          <ion-input formControlName="BranchId"  type="number" placeholder="ادخل اسم المستخدم"></ion-input>
+        </fieldset>
+      </ion-item>
+      <div class="error-validation" *ngIf="loginFormGroup.get('BranchId')?.hasError('required') && loginFormGroup.get('BranchId')?.touched">
+        <p>رقم الفرع مطلوب</p>
+      </div>
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+          <legend>كلمة المرور</legend> 
+          <ion-input  formControlName="UPsd" type="password" placeholder="*******"></ion-input>
+        </fieldset>
+      </ion-item>
+      <div class="error-validation" *ngIf="loginFormGroup.get('UPsd')?.hasError('required') && loginFormGroup.get('UPsd')?.touched">
+        <p>كلمة المرور مطلوبة</p>
+      </div>
+      <ion-button class="login-button"  id="open-loading" (click)="login()" expand="block">تسجيل الدخول</ion-button>
+      <hr/>
+      </form>
+   
+  </div>
+</ion-content>
+<ion-footer color="white">
+  <ion-toolbar>
+    <p class="copyright"><a>جميع الحقوق محفوظة للايت سوفت</a></p>
+  </ion-toolbar>
+</ion-footer>

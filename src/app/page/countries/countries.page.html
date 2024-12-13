@@ -1,0 +1,148 @@
+<ion-content [fullscreen]="true" color="light">
+
+
+  <ion-row class="tagline">
+    <ion-col>
+      <ion-label>
+        <p>
+          <ion-text color="dark"> ارسال البيانات الى السرفر </ion-text>
+        </p>
+      </ion-label>
+    </ion-col>
+  </ion-row>
+
+ 
+  @if (CountrieList.length > 0) { 
+<!--     
+    <ion-row *ngFor="let countries of Conters; let i = index" class="ion-margin-bottom recentJobs">
+    <ion-list lines="none" class="ion-margin-bottom recentJobs">
+
+      <ion-list-header class="ion-margin-bottom">
+        <ion-label>
+          رقم : {{i}}
+
+        </ion-label>
+        <ion-label>
+          اسم الدولة : {{countries.countries}}
+
+        </ion-label>
+        <ion-button fill="clear" size="small" color="medium">
+          <ion-text>
+            عرض الكل
+          </ion-text>
+        </ion-button>
+      </ion-list-header> 
+
+     
+        
+      
+        <ion-item *ngFor="let item of countries.cities; let i = index" class="ion-margin-bottom" >
+         
+          <ion-label class="recent">
+            اسم المدينة :
+            {{item}}
+            <p>
+            
+           رقم  
+          : {{i}}
+
+          
+            </p>
+          </ion-label>
+          <ion-buttons   slot="end" >
+            <ion-button color="warning" (click)="editCountrie(i,item)">
+              <ion-icon name="create-outline" ></ion-icon>
+            </ion-button>
+            <ion-button color="danger" (click)="deleteCountrie(i,item)" >
+              <ion-icon name="trash-outline" ></ion-icon>
+            </ion-button>
+            <ion-button  color="primary">
+              <ion-icon name="print-outline"></ion-icon>
+            </ion-button>
+            <ion-button color="secondary" >
+              <ion-icon name="information-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      
+
+    </ion-list>
+
+  </ion-row> -->
+
+  <ion-list lines="none" class="ion-margin-bottom recentJobs">
+
+    <ion-list-header class="ion-margin-bottom">
+      <ion-label>
+       الاصناف الاخيرة
+      </ion-label>
+      <ion-button fill="clear" size="small" color="medium">
+        <ion-text>
+          عرض الكل
+        </ion-text>
+      </ion-button>
+    </ion-list-header> 
+
+   
+      
+    @for (item of CountrieList; track $index) {
+      
+      <ion-item  class="ion-margin-bottom" >
+       
+        <ion-label class="recent">
+          {{item}}
+          <p>
+          
+         رقم  
+        : {{$index}}
+
+        
+          </p>
+        </ion-label>
+        <ion-buttons   slot="end" >
+          <ion-button color="warning" (click)="editCountrie($index,item)">
+            <ion-icon name="create-outline" ></ion-icon>
+          </ion-button>
+          <ion-button color="danger" (click)="deleteCountrie($index,item)" >
+            <ion-icon name="trash-outline" ></ion-icon>
+          </ion-button>
+          <ion-button  color="primary" (click)="printCountrie(order)">
+            <ion-icon name="print-outline"></ion-icon>
+          </ion-button>
+          <ion-button color="secondary" [routerLink]="['/contrie',$index]" >
+            <ion-icon name="information-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    }
+   
+
+  </ion-list>
+
+    }
+
+    @else {
+      <ion-list-header class="ion-margin-bottom">
+        <ion-label>
+         الاصناف الاخيرة
+        </ion-label>
+        <ion-button fill="clear" size="small" color="medium">
+          <ion-text>
+            عرض الكل
+          </ion-text>
+        </ion-button>
+      </ion-list-header> 
+      <ion-content >
+ <h1>جاري تحميل البيانات</h1>
+        <ion-spinner name="dots" color="primary"></ion-spinner>
+      </ion-content>
+
+      
+    }
+  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+		<ion-fab-button>
+			<ion-icon name="add" (click)="addCountrie()"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+</ion-content>

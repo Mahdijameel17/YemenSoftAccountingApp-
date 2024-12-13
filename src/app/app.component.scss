@@ -1,0 +1,87 @@
+.menu-header-bg{
+height: 180px;
+width: 350px;
+background: #176B87;
+background: linear-gradient(90deg,#176B87 0%,#04364A 100%);
+box-shadow: 0px 1px 10px  #DAFFFB;
+transform: rotate(15deg);
+border-radius: (10px 10px 50px 10px);
+margin-right: -18px;
+margin-top: -50px;
+margin-bottom: -110px;
+}
+.header-content{
+    position: relative;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    img{
+        width: 80px;
+        height: 80px;
+
+    }
+    h2{
+        font-size: 300;
+        color:#FFC436 ;
+    }
+    p{
+        font-size: 12px;
+        color: #DAFFFB;
+    }
+}
+.action-boutton{
+    margin-top: 70px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    
+    ion-button{
+font-weight: 300;  
+--background: #04364A;
+--border-radius: 7px;   
+--box-shadow: none; 
+    }
+    ion-icon{
+    margin-right: 7px;
+   }
+    
+}
+.meun-itmes{
+    margin: 0px;
+    ion-icon{
+        margin-left: 20px;
+        color: #176B87;
+    }
+    ion-item{
+        padding-right: 20px;
+        margin-bottom: 10px;
+    }
+    .active{
+        border-right:5px solid ;
+        color: #64CCC5;
+        padding-right: 15px;
+        ion-icon{
+            color: #64CCC5;
+        }
+    }
+
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: #666;
+}
+.footer-text a {
+    color: #64CCC5;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  

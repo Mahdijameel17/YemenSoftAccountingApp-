@@ -1,0 +1,457 @@
+<ion-content>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-thumbnail class="menu">
+          <ion-back-button
+            color="primary"
+            mode="md"
+            (click)="navService.back()"
+            defaultHref=""
+          ></ion-back-button>
+        </ion-thumbnail>
+      </ion-buttons>
+      <ion-title color="danger"> اظافة صنف </ion-title>
+      <ion-buttons slot="end">
+        <ion-button
+          expand="block"
+          size="large"
+          color="success"
+          [disabled]="!itemFormGroup.valid"
+          (click)="save()"
+          >حفظ <ion-icon name="checkmark"></ion-icon
+        ></ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <form [formGroup]="itemFormGroup">
+    <ion-item-divider  >
+      <ion-label> معلومات الصنف</ion-label>
+    </ion-item-divider>
+    <ion-list>
+      <ion-grid>
+        <ion-item>
+          <ion-select
+            formControlName="GroupId"
+            label=" المجموعة "
+            placeholder="  يمكن الاختيار"
+            okText=" تأكيد اختيار المجموعة"
+            cancelText="الغاء"
+          >
+            <ion-select-option
+              *ngFor="let item of ElookupItemGroup"
+              [value]="item.Id"
+              >{{item.Name}}</ion-select-option
+            >
+          </ion-select>
+
+          <ion-button color="light" (click)="openPage('addItemGroup')">
+            <ion-icon slot="icon-only" name="add"></ion-icon>
+          </ion-button>
+          <ion-button color="light" (click)="openPage('viewItemGroup')">
+            <ion-icon name="eye-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <div
+          class="error-validation"
+          *ngIf="itemFormGroup.get('Name')?.hasError('required') && itemFormGroup.get('Name')?.touched"
+        >
+          <p>يجب ادخال اسم الصنف</p>
+        </div>
+        <ion-item>
+          <ion-text color="danger">*</ion-text>
+
+          <ion-input
+            type="text"
+            formControlName="Name"
+            placeholder=" اسم الصنف "
+          >
+            <div slot="end">
+              <ion-text color="danger" *ngIf="!itemFormGroup.get('Name')?.valid"
+                >(مطلوب)</ion-text
+              >
+            </div>
+          </ion-input>
+
+          <ion-input
+            color="danger"
+            label="*"
+            type="text"
+            formControlName="EnName"
+            placeholder=" اسم الصنف انجليزي"
+          >
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-text color="danger">*</ion-text>
+
+          <ion-input
+            formControlName="UnitName"
+            (ionInput)="onSearchChange($event)"
+            (ionFocus)="openUnitName()"
+            placeholder="الوحدة الصغر"
+            clearInput="true"
+          >
+          </ion-input>
+
+          <ion-input
+            label="*"
+            type="text"
+            formControlName="Barcode"
+            placeholder="ادخل البركود"
+            clearInput="true"
+          >
+          </ion-input>
+
+          <ion-button>
+            <ion-icon name="barcode-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <ion-list *ngIf="isUnitNameOpen">
+          <ion-item
+            color="light"
+            [button]="true"
+            [detail]="false"
+            *ngFor="let item of ELookupUnitNameSearch.slice(0, 5)"
+            (click)="setUnitName(item.Name)"
+          >
+            <div class="item-content">
+              <div class="item-name">{{ item.Name }}</div>
+            </div>
+          </ion-item>
+         
+        </ion-list>
+        <ion-item>
+          <ion-input
+            type="number"
+            label="*"
+            placeholder="الرف الافتراضي للصنف" 
+          >
+          </ion-input>
+
+          <ion-input
+            type="number"
+            label="*"
+            formControlName="Sort"
+            placeholder="  الترتيب" 
+          >
+          </ion-input>
+      
+        </ion-item>
+        <ion-item>
+          
+          <ion-input
+          type="number"
+          label="*"
+          formControlName="MinVal"
+          placeholder="  الحد الادنى للصنف" 
+        >
+        </ion-input>
+      
+        </ion-item>
+        <ion-item>
+          <ion-select
+          label=" مجوعة اصناف النظام"
+          placeholder="يمكن الاختيار"
+          okText=" تأكيد اختيار المجموعة"
+          cancelText="الغاء"
+          formControlName="SystemId"
+        >
+          <ion-select-option
+            *ngFor="let item of ElookupTarmeez"
+            [value]="item.Id"
+            >{{item.Name}}</ion-select-option
+          >
+        </ion-select>
+        </ion-item>
+
+      </ion-grid>
+    </ion-list>
+    <ion-item-divider>
+      <ion-label> المعلومات المالية </ion-label>
+    </ion-item-divider>
+    <ion-list>
+      <ion-grid>
+        
+        <ion-item>
+          <ion-text color="danger">*</ion-text>
+
+          <ion-select
+            label="عملة النصف  "
+            okText="   عملة بيع وشراء النصف"
+            cancelText="الغاء"
+            formControlName="CurrencyId"
+          >
+            <ion-select-option
+              *ngFor="let item of ElookupCurrency"
+              [value]="item.Id"
+              >{{item.Name}}</ion-select-option
+            >
+          </ion-select>
+          <ion-text color="danger">*</ion-text>
+
+          <ion-select
+            label=" مخزون الصنف "
+            okText=" تأكيد عملة مخزون الصنف "
+            cancelText="الغاء"
+            formControlName="StoreCurrencyId"
+          >
+            <ion-select-option
+              *ngFor="let item of ElookupCurrency"
+              [value]="item.Id"
+              >{{item.Name}}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            type="number"
+            label="*"
+            formControlName="PriceB"
+            placeholder="سعر الشراء"
+          >
+          </ion-input>
+
+          <ion-input
+            type="number"
+            label="*"
+            formControlName="PriceS"
+            placeholder="سعر البيع"
+          >
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input
+            type="number"
+            label="*"
+            formControlName="MinPriceS"
+            placeholder="اقل سعر للبيع"
+          >
+          </ion-input>
+
+          <ion-input
+            type="number"
+            label="*"
+            formControlName="MaxPriceS"
+            placeholder=" اعلى سعر للبيع"
+          >
+          </ion-input>
+        </ion-item>
+       
+        <ion-item>
+          <ion-input
+            type="number"
+            label="*"
+            formControlName="WholePriceS"
+            placeholder="  سعر الجملة"
+          >
+          </ion-input>
+
+          <ion-input
+            type="number"
+            label="*"
+            formControlName="SpecialPriceS"
+            placeholder="   سعر خاص"
+          >
+          </ion-input>
+        </ion-item>
+       <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+
+              <ion-toggle   formControlName="UseComm"> عمولة مبلغ</ion-toggle>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="itemFormGroup.value.UseComm">
+
+            <ion-col size="12">
+              <ion-toggle (ionChange)="itemFormGroup.patchValue({CommKindId: 1})" [checked]="itemFormGroup.value.CommKindId === 1" [disabled]="itemFormGroup.value.CommKindId === 1"> عمولة نسبة </ion-toggle>
+
+            </ion-col>
+              <ion-col size="12" *ngIf="itemFormGroup.value.CommKindId===1">
+
+              <ion-input
+              placeholder="النسبة"
+              type="number"
+             
+              (ionChange)="itemFormGroup.patchValue({CommVal: $event.target.value})"
+
+              
+
+              label="نسبة"
+              >
+              <div slot="end">
+                <ion-text color="danger" 
+                  >(مطلوب)</ion-text
+                >
+              </div>
+
+              </ion-input>
+
+            </ion-col>
+
+          </ion-row>
+          <ion-row *ngIf="itemFormGroup.value.UseComm" >
+
+            <ion-col size="12">
+              <ion-toggle (ionChange)="itemFormGroup.patchValue({
+                CommKindId: 2,
+              });"   [checked]="itemFormGroup.value.CommKindId === 2" [disabled]="itemFormGroup.value.CommKindId === 2" > عمولة مبلغ </ion-toggle>
+
+            </ion-col>
+              <ion-col size="12" *ngIf="itemFormGroup.value.CommKindId===2">
+
+              <ion-input
+              placeholder="ادخل المبلغ"
+              type="number"
+              label="المبلغ"
+              (ionChange)="itemFormGroup.patchValue({CommVal: $event.target.value})"
+              >
+              <div slot="end">
+                <ion-text color="danger" 
+                  >(مطلوب)</ion-text
+                >
+              </div>
+
+              </ion-input>
+
+            </ion-col>
+
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      </ion-grid>
+    </ion-list>
+    <ion-item-divider>
+      <ion-label> اعدادت الصنف  </ion-label>
+    </ion-item-divider>
+    <ion-list>
+
+      <ion-item>
+        <ion-toggle >التعامل معا الارقم التسلسلية</ion-toggle>
+
+      </ion-item>
+      <ion-item>
+        <ion-toggle>عرض رسالة حفظ الصنف</ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-toggle formControlName="IsAutoGenerate"  >تركيب الصنف تلقائيا اثناء البيع</ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-select label="نوع الصنف" formControlName="IsService" okText="تأكيد" cancelText="الغاء">
+
+          <ion-select-option   [value]="false" >سلعي</ion-select-option>
+          <ion-select-option   [value]="true">خدمي</ion-select-option>
+        </ion-select>
+        <ion-select label="درجة الصنف" formControlName="IsComplex" okText="تأكيد" cancelText="الغاء">
+          <ion-select-option [value]="false">عادي </ion-select-option>
+          <ion-select-option  [value]="true" >مركب</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+              <ion-toggle formControlName="CostLessSale">  السماح بالبيع باقل من التكلفة</ion-toggle>
+      </ion-item>
+         <ion-item>
+          <ion-row>
+            <ion-col size="12">
+              <ion-toggle formControlName="AllowNeg">السماح بالكميات السلبية</ion-toggle>
+            </ion-col>
+            <ion-col size="12" size-sm="2">
+              <!-- لم يعمل -->
+
+              <ion-chip color="success" *ngIf="!itemFormGroup.value.AllowNegForAllItem" (click)="toggleAllowNegForAllItemGroup()">
+                <ion-label >تطبيق على جميع الاصناف </ion-label>
+              </ion-chip>
+              <ion-chip color="danger" *ngIf="itemFormGroup.value.AllowNegForAllItem" (click)="toggleAllowNegForAllItemGroup()">
+                <ion-label>الغاء التطبيق على جميع الاصناف </ion-label>
+            
+                <ion-icon name="close"></ion-icon>
+              </ion-chip>
+          
+
+            </ion-col>
+          </ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-toggle formControlName="IsExpire"> استخدام تاريخ انتهاء</ion-toggle>
+            </ion-col>
+            <ion-col size="12" size-sm="2">
+              <ion-chip color="success"   *ngIf="itemFormGroup.value.IsExpire&&!itemFormGroup.value.IsNotifyExp" (click)="IsNotifyExp()">
+                <ion-label> تنبية قبل تاريخ الانتهاء </ion-label>
+              </ion-chip>
+
+              <ion-chip color="danger" *ngIf="itemFormGroup.value.IsExpire&&itemFormGroup.value.IsNotifyExp" (click)="itemFormGroup.value.IsNotifyExp=false">
+                <ion-label>الغاء التنبية   </ion-label>
+                <p>
+                  اليوم :
+                {{itemFormGroup.value.ExpDay}} 
+               </p>
+               <p>
+                 الشهر :
+                 {{itemFormGroup.value.ExpMonth}}
+               </p>
+               <p>
+                 السنة :
+                 {{ itemFormGroup.value.ExpYear}}
+               </p>
+                <ion-icon name="close"></ion-icon>
+                
+              </ion-chip>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+
+              <ion-toggle>اكمل تلقائي عند كتابة اسم الصنف</ion-toggle>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+      <ion-item>
+          <ion-toggle formControlName="AvgCostAtCurrentVal">عرض التكاليف والشراء بسعر الصرف الحالي </ion-toggle>
+      </ion-item>
+      <ion-item>
+              <ion-toggle formControlName="IsScale">مجوعة ميزان </ion-toggle>
+      </ion-item>
+    </ion-list>
+
+  </form>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="light">
+      <ion-icon name="settings"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="tertiary" (click)="refresh()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="danger" shape="round" (click)="clear()">
+        <ion-icon name="trash"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+  <ion-footer>
+    <ion-toolbar class="ion-text-center">
+      <ion-text color="primary" size="small" >
+           جميع الحقوق محفوظة
+
+      </ion-text>
+      <br>
+      <ion-text color="primary" size="small" >
+          ©  LiteSoft Software 
+
+      </ion-text>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>

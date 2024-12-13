@@ -1,0 +1,62 @@
+<ion-app>
+  <ion-menu
+    contentId="main-content"
+    type="overlay"
+    *ngIf="auth.isAuthenticated()"
+  >
+    <ion-content>
+      <div class="menu-header-bg"></div>
+      <div class="header-content">
+        <img src="../assets/img/user_12749004.png" alt="" />
+        <ion-label>
+          <h2>{{ auth.username }}</h2>
+        </ion-label>
+      </div>
+
+      <div class="action-boutton">
+        <ion-button [routerLink]="['/login']" (click)="logout()">
+          تسجيل الخروج
+          <ion-icon name="exit-outline"></ion-icon>
+        </ion-button>
+      </div>
+      <ion-list class="meun-itmes" lines="none">
+        <ion-item>
+          <ion-icon
+            name="pie-chart-outline"
+            [routerLink]="['/home']"
+            routerLinkActive="active"
+          ></ion-icon
+          >لوحة التحكم
+        </ion-item>
+        <ion-item>
+          <ion-icon
+            [routerLink]="['/sales']"
+            routerLinkActive="active"
+            name="bag-handle-outline"
+          ></ion-icon>
+          نظام المبيعات
+        </ion-item>
+        <ion-item>
+          <ion-icon
+            name="archive-outline"
+            [routerLink]="['/store']"
+            routerLinkActive="active"
+          ></ion-icon>
+          نظام المخزون
+        </ion-item>
+        <!-- <ion-item  [routerLink]="['/weather']" routerLinkActive="active">
+          <ion-icon name="browsers-outline" ></ion-icon> ارسال البيانات الى
+          السرفر
+        </ion-item>
+       -->
+      </ion-list>
+    </ion-content>
+    <ion-footer>
+      <div class="footer-text">
+        جميع الحقوق محفوظة &copy;
+        <a href="https://litesoftit.com/">لايت سوفت</a>
+      </div>
+    </ion-footer>
+  </ion-menu>
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+</ion-app>

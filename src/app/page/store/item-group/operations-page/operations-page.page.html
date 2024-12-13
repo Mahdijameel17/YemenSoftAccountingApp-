@@ -1,0 +1,224 @@
+<ion-content>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-thumbnail class="menu">
+          <ion-back-button
+            color="primary"
+            mode="md"
+            (click)="navService.back()"
+            defaultHref=""
+          ></ion-back-button>
+        </ion-thumbnail>
+      </ion-buttons>
+      <ion-title color="danger"> اظافة مجموعة مخزنية </ion-title>
+      <ion-buttons slot="end">
+        <ion-button
+          expand="block"
+          size="large"
+          color="success"
+          [disabled]="!itemGroupFormGroup.valid"
+          (click)="save()"
+          >حفظ <ion-icon name="checkmark"></ion-icon
+        ></ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <form [formGroup]="itemGroupFormGroup">
+    <ion-list>
+      <div
+        class="error-validation"
+        *ngIf="itemGroupFormGroup.get('Name')?.hasError('required') && itemGroupFormGroup.get('Name')?.touched"
+      >
+        <p>يجب ادخال اسم المجموعة</p>
+      </div>
+      <ion-item>
+        <ion-input
+          label="اسم المجموعة"
+          type="text"
+          formControlName="Name"
+          placeholder="ادخل اسم المجموعة"
+          ><ion-text color="danger"></ion-text>
+        </ion-input>
+        <ion-text color="danger" *ngIf="!itemGroupFormGroup.get('Name')?.valid"
+          >مطلوب</ion-text
+        >
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="ترتيب"
+          placeholder="ادخل ترتيب"
+          formControlName="Sort"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <!-- لم يعمل -->
+        <ion-select
+          formControlName="ParentId"
+          label="رقم المجموعة الام"
+          placeholder="  يمكن الاختيار"
+          okText=" تأكيد اختيار المجموعة"
+          cancelText="الغاء"
+        >
+          <ion-select-option
+            *ngFor="let item of ElookupItemGroup"
+            [value]="item.Id"
+            >{{item.Name}}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select
+          label="عملة مخزون المجموعة"
+          okText=" تأكيد عملة المجموعة "
+          cancelText="الغاء"
+          formControlName="StoreCurrencyId"
+        >
+          <ion-select-option
+            *ngFor="let item of ElookupCurrency"
+            [value]="item.Id"
+            >{{item.Name}}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-toggle formControlName="CostLessSale">  السماح بالبيع باقل من التكلفة</ion-toggle>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-toggle formControlName="AllowNeg">السماح بالكميات السلبية</ion-toggle>
+            </ion-col>
+            <ion-col size="12" size-sm="2">
+              <!-- لم يعمل -->
+
+              <ion-chip color="success" *ngIf="!itemGroupFormGroup.value.AllowNegForAllItemGroup" (click)="toggleAllowNegForAllItemGroup()">
+                <ion-label >تطبيق على جميع اصناف المجموعة</ion-label>
+              </ion-chip>
+              <ion-chip color="danger" *ngIf="itemGroupFormGroup.value.AllowNegForAllItemGroup" (click)="toggleAllowNegForAllItemGroup()">
+                <ion-label>الغاء التطبيق على جميع اصناف المجموعة</ion-label>
+            
+                <ion-icon name="close"></ion-icon>
+              </ion-chip>
+          
+
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+
+              <ion-toggle>اكمل تلقائي عند كتابة اسم المجموعة</ion-toggle>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-toggle formControlName="IsExpire"> استخدام تاريخ انتهاء</ion-toggle>
+            </ion-col>
+            <ion-col size="12" size-sm="2">
+              <ion-chip color="success"   *ngIf="itemGroupFormGroup.value.IsExpire&&!itemGroupFormGroup.value.IsNotifyExp" (click)="IsNotifyExp()">
+                <ion-label> تنبية قبل تاريخ الانتهاء </ion-label>
+              </ion-chip>
+
+              <ion-chip color="danger" *ngIf="itemGroupFormGroup.value.IsExpire&&itemGroupFormGroup.value.IsNotifyExp" (click)="itemGroupFormGroup.value.IsNotifyExp=false">
+                <ion-label>الغاء التنبية   </ion-label>
+                <p>
+                  اليوم :
+                {{itemGroupFormGroup.value.ExpDay}} 
+               </p>
+               <p>
+                 الشهر :
+                 {{itemGroupFormGroup.value.ExpMonth}}
+               </p>
+               <p>
+                 السنة :
+                 {{itemGroupFormGroup.value.ExpYear}}
+               </p>
+                <ion-icon name="close"></ion-icon>
+                
+              </ion-chip>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+          <ion-toggle formControlName="AvgCostAtCurrentVal">عرض التكاليف والشراء بسعر الصرف الحالي </ion-toggle>
+        </ion-grid>
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-toggle formControlName="IsScale">مجوعة ميزان </ion-toggle>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              
+              <ion-toggle>جعل كل اصناف المجموعة اصناف ميزان </ion-toggle>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      <ion-item>
+        <ion-select
+          label=" مجوعة اصناف النظام"
+          placeholder="يمكن الاختيار"
+          okText=" تأكيد اختيار المجموعة"
+          cancelText="الغاء"
+        >
+          <ion-select-option
+            *ngFor="let item of ElookupTarmeez"
+            [value]="item.ItemNo"
+            >{{item.Name}}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    
+  </form>
+
+  <!-- <ion-button shape="round" color="success"  >
+تحديث البايات
+  </ion-button> -->
+
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button color="light">
+      <ion-icon name="settings"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="tertiary"  (click)="refresh()"   >
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="danger" shape="round" (click)="clear()"  >
+        <ion-icon name="trash"></ion-icon>
+      </ion-fab-button>
+
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>
+
+

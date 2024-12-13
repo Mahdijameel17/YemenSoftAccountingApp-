@@ -1,0 +1,10 @@
+{
+  "name": "AppLiteSoft",
+  "ionic": {
+    "mode": "ios"
+  },
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

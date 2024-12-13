@@ -1,0 +1,538 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-thumbnail class="menu">
+        <ion-back-button
+          color="primary"
+          mode="md"
+          defaultHref="/store"
+        ></ion-back-button>
+      </ion-thumbnail>
+    </ion-buttons>
+    <ion-title color="primary"> بيانات الاصناف </ion-title>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content [fullscreen]="true" color="light">
+  <ion-list-header class="ion-margin-bottom">
+    <ion-label> قائمة الاصناف </ion-label>
+  </ion-list-header>
+  <ion-item
+    class="ion-margin-bottom"
+    *ngFor="let item of itemData; let i = index"
+  >
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12" size-sm="6">
+          <ion-label class="recent">
+            <ion-chip color="success"> {{i + 1}} </ion-chip>
+            {{item.Name}}
+          </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" size-sm="6">
+          <ion-label class="recent">
+            <p>
+              رقم المجموعة :
+              <ion-chip color="tertiary"> {{item.Id}} </ion-chip>
+            </p>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-buttons class="ion-justify-content-center">
+            <ion-button
+              id="modalView"
+              color="success"
+              (click)="openModal('View',item)"
+            >
+              <ion-icon name="eye-outline"></ion-icon>
+            </ion-button>
+            <ion-button color="danger" (click)="deleteItem(item)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+            <ion-button (click)="openPage('itemUnit',item)" color="tertiary">
+              <ion-icon name="bag-add-outline"></ion-icon>
+            </ion-button>
+            <ion-button (click)="openModal('Settings',item)" color="medium">
+              <ion-icon name="settings"></ion-icon>
+            </ion-button>
+            <ion-button>
+              <ion-icon name="barcode-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <ion-modal
+    [isOpen]="isModalOpenView"
+    [initialBreakpoint]="0.5"
+    [breakpoints]="[0.5, 0.8, 0.8, 0.8]"
+  >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="isModalOpenView = false">الغاء </ion-button>
+          </ion-buttons>
+          <ion-title>التفاصيل</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-item>
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12" size-sm="6">
+                  <ion-label class="recent">
+                    <p>
+                      الاسم :
+                      <ion-chip color="success"> {{items.Name}} </ion-chip>
+                    </p>
+                  </ion-label>
+                </ion-col>
+                <ion-button>
+                  البركود
+                  <ion-icon name="barcode-outline"></ion-icon>
+                </ion-button>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12" size-sm="6">
+                  <ion-label class="recent">
+                    <p>
+                      رقم المجموعة :
+                      <ion-chip color="tertiary"> {{items.Id}} </ion-chip>
+                    </p>
+                  </ion-label>
+                </ion-col>
+                <ion-col size="12" size-sm="6">
+                  <ion-label class="recent">
+                    <p>
+                      الصنف :
+                      <ion-chip color="tertiary">
+                        {{items.GroupName}}
+                      </ion-chip>
+                    </p>
+                  </ion-label>
+                </ion-col>
+                <ion-col size="6" size-sm="6">
+                  <ion-label class="recent">
+                    <p>
+                      الكمية :
+                      <ion-chip color="tertiary">
+                        {{items.Available}}
+                      </ion-chip>
+                    </p>
+                  </ion-label>
+                </ion-col>
+                <ion-col size="6" size-sm="6">
+                  <ion-label class="recent">
+                    <p>
+                      الوحدة :
+                      <ion-chip color="tertiary">
+                        {{items.DefaultUnitName}}
+                      </ion-chip>
+                    </p>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6" size-sm="6">
+                  <ion-label class="recent">
+                    <p>
+                      سعر الشراء :
+                      <ion-chip color="tertiary"> {{items.PriceS}} </ion-chip>
+                    </p>
+                  </ion-label>
+                </ion-col>
+                <ion-col size="6" size-sm="6">
+                  <ion-label class="recent">
+                    <p>
+                      سعر البيع :
+                      <ion-chip color="tertiary"> {{items.PriceB}} </ion-chip>
+                    </p>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="6" size-sm="6">
+                  <ion-label class="recent">
+                    <p>
+                      اقل سعر بيع:
+                      <ion-chip color="tertiary">
+                        {{items.MinPriceS||"0"}}
+                      </ion-chip>
+                    </p>
+                  </ion-label>
+                </ion-col>
+                <ion-col size="6" size-sm="6">
+                  <ion-label class="recent">
+                    <p>
+                      الحد الاعلى:
+                      <ion-chip color="tertiary">
+                        {{items.MaxPriceS||"0"}}
+                      </ion-chip>
+                    </p>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12" size-sm="12">
+                  <ion-label class="recent">
+                    <p>
+                      العملة :
+                      <ion-chip color="tertiary">
+                        {{items.CurrencyCode}}
+                      </ion-chip>
+                    </p>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal [isOpen]="isModalOpenSettings">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="isModalOpenSettings = false"
+              >الغاء
+            </ion-button>
+          </ion-buttons>
+          <ion-title>الاعدادات</ion-title>
+          <ion-buttons slot="end">
+            <ion-button [strong]="true" (click)="SettingsSave()" color="primary">حفظ</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-item>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-label class="recent">
+                    رقم :
+                    <ion-chip color="tertiary"> {{items.Id}} </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                    الوحدة:
+                    <ion-chip color="tertiary" (click)="UpdateData('Unit')">
+                      {{items.DefaultUnitName}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                    المجموعة :
+                    <ion-chip color="tertiary" (click)="UpdateData('Group')">
+                      {{Elookup.NameGroup}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                    الاسم :
+                    <ion-chip color="tertiary" (click)="UpdateData('Name')">
+                      {{items.Name}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <!-- <ion-col>
+
+                  <ion-button >
+                    البركود
+                    <ion-icon name="barcode-outline"></ion-icon>
+                  </ion-button>
+                </ion-col> -->
+                <ion-col>
+                  <ion-label class="recent">
+                     الترتيب:
+                    <ion-chip color="tertiary"  (click)="UpdateData('Sort')">
+                      {{items.Sort}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                    الحد الادنى للنصف:
+                    <ion-chip color="tertiary"  (click)="UpdateData('Min')">
+                      {{items.MinVal}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                  مجموعة  النظام 
+                    <ion-chip color="tertiary"  (click)="UpdateData('System')">
+                      {{Elookup.NameTarmeez}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                  عملة الصنف
+                    <ion-chip color="tertiary"  (click)="UpdateData('Currency')">
+                      {{Elookup.NameCurrency}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                  عملة المجموعة
+                    <ion-chip color="tertiary"  (click)="UpdateData('GroupCurrency')">
+                      {{Elookup.NameCurrency2}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                    سعر الشراء:
+                    <ion-chip color="tertiary"  (click)="UpdateData('PriceB')">
+                      {{items.PriceB}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                    سعر البيع:
+                    <ion-chip color="tertiary"  (click)="UpdateData('PriceS')">
+                      {{items.PriceS}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                    اقل سعر:
+                    <ion-chip color="tertiary"  (click)="UpdateData('MinPriceS')">
+                      {{items.MinPriceS}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                    الحد الاعلى للسعر:
+                    <ion-chip color="tertiary"  (click)="UpdateData('MaxPriceS')">
+                      {{items.MaxPriceS}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                    السعر الجملة:
+                    <ion-chip color="tertiary"  (click)="UpdateData('WholePriceS')">
+                      {{items.WholePriceS}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col>
+                  <ion-label class="recent">
+                    السعر الخاص : 
+                    <ion-chip color="tertiary"  (click)="UpdateData('SpecialPriceS')">
+                      {{items.SpecialPriceS}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>  
+                </ion-col>
+
+           
+
+
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+          <ion-item  style="font-size: small">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="12">
+      
+                    <ion-toggle         [ngModel]="items.UseComm"
+                      (ionChange)="items.UseComm = !items.UseComm"
+                    >  خاضع لعمولة مبيعات</ion-toggle>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngIf="items.UseComm">
+      
+                  <ion-col size="12">
+                    <ion-toggle (ionChange)="items.CommKindId=1" [checked]="items.CommKindId === 1" [disabled]="items.CommKindId === 1"> عمولة نسبة </ion-toggle>
+      
+                  </ion-col>
+                    <ion-col size="12" *ngIf="items.CommKindId===1">
+                        <ion-label class="recent">
+                             المبلغ نسبة: 
+                          <ion-chip color="tertiary"  (click)="UpdateData('CommVal')">
+                            {{items.CommVal}}
+                            <ion-icon name="create-outline"></ion-icon>
+                          </ion-chip>
+                        </ion-label>  
+                  </ion-col>
+      
+                </ion-row>
+                <ion-row *ngIf="items.UseComm" >
+      
+                  <ion-col size="12">
+                    <ion-toggle (ionChange)="items.CommKindId=2"   [checked]="items.CommKindId === 2" [disabled]="items.CommKindId === 2" > عمولة مبلغ </ion-toggle>
+      
+                  </ion-col>
+                    <ion-col size="12" *ngIf="items.CommKindId===2">
+      
+                        <ion-label class="recent">
+                             مبلغ : 
+                          <ion-chip color="tertiary"  (click)="UpdateData('CommVal')">
+                            {{items.CommVal}}
+                            <ion-icon name="create-outline"></ion-icon>
+                          </ion-chip>
+                        </ion-label>  
+               
+      
+                  </ion-col>
+      
+                </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle >التعامل معا الارقم التسلسلية</ion-toggle>
+
+                </ion-col>
+                <ion-col size="12">
+
+                  <ion-toggle>عرض رسالة حفظ الصنف</ion-toggle>
+
+                </ion-col>
+                <ion-col size="12">
+
+                  <ion-toggle [ngModel]="items.IsAutoGenerate" (ionChange)="items.IsAutoGenerate = !items.IsAutoGenerate" >تركيب الصنف تلقائيا اثناء البيع</ion-toggle>
+
+                </ion-col>
+                <ion-item>
+                  <ion-select label="نوع الصنف" [ngModel]="items.IsService" okText="تأكيد" cancelText="الغاء">
+          
+                    <ion-select-option   [value]="false" >سلعي</ion-select-option>
+                    <ion-select-option   [value]="true">خدمي</ion-select-option>
+                  </ion-select>
+                  <ion-select label="درجة الصنف" [ngModel]="items.IsComplex" okText="تأكيد" cancelText="الغاء">
+                    <ion-select-option [value]="false">عادي </ion-select-option>
+                    <ion-select-option  [value]="true" >مركب</ion-select-option>
+                  </ion-select>
+                </ion-item>
+
+                <ion-col size="12">
+                  <ion-toggle
+                    (ionChange)="items.CostLessSale = !items.CostLessSale"
+                    [ngModel]="items.CostLessSale"
+                  >
+                    السماح بالبيع باقل من التكلفة</ion-toggle
+                  >
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle
+                    (ionChange)="items.AllowNeg = !items.AllowNeg"
+                    [ngModel]="items.AllowNeg"
+                    >السماح بالكميات السلبية</ion-toggle
+                  >
+                </ion-col>
+                <ion-col size="12" size-sm="2">
+                  <ion-chip color="success" *ngIf="!items.AllowNegForAllItem">
+                    <ion-label>تطبيق على جميع اصناف المجموعة</ion-label>
+                  </ion-chip>
+                  <ion-chip color="danger" *ngIf="items.AllowNegForAllItem">
+                    <ion-label>الغاء التطبيق على جميع اصناف المجموعة</ion-label>
+
+                    <ion-icon name="close"></ion-icon>
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle>اكمل تلقائي عند كتابة اسم المجموعة</ion-toggle>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle
+                    (ionChange)="items.IsExpire = !items.IsExpire"
+                    [ngModel]="items.IsExpire"
+                  >
+                    استخدام تاريخ انتهاء</ion-toggle
+                  >
+                </ion-col>
+                <ion-col size="12" size-sm="2">
+                  <ion-chip
+                    color="success"
+                    *ngIf="items.IsExpire&&!items.IsNotifyExp" (click)="UpdateData('IsNotifyExp')"
+                  >
+                    <ion-label> تنبية قبل تاريخ الانتهاء </ion-label>
+                  </ion-chip>
+
+                  <ion-chip
+                    color="danger"
+                    *ngIf="items.IsExpire&&items.IsNotifyExp"
+                    (click)="items.IsNotifyExp=false"
+                  >
+                    <ion-label>الغاء التنبية </ion-label>
+                    <p>اليوم : {{items.ExpDay}}</p>
+                    <p>الشهر : {{items.ExpMonth}}</p>
+                    <p>السنة : {{items.ExpYear}}</p>
+                    <ion-icon name="close"></ion-icon>
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle
+                    (ionChange)="items.AvgCostAtCurrentVal = !items.AvgCostAtCurrentVal"
+                    [ngModel]="items.AvgCostAtCurrentVal"
+                    >عرض التكاليف والشراء بسعر الصرف الحالي
+                  </ion-toggle>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle
+                    (ionChange)="items.IsScale = !items.IsScale"
+                    [ngModel]="items.IsScale"
+                    >مجوعة ميزان
+                  </ion-toggle>
+                </ion-col>
+              </ion-row>
+            
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openPage('add')">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

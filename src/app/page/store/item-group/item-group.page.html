@@ -1,0 +1,238 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-thumbnail class="menu">
+        <ion-back-button
+          color="primary"
+          mode="md"
+          defaultHref="/store"
+        ></ion-back-button>
+      </ion-thumbnail>
+    </ion-buttons>
+    <ion-title color="primary">المجموعات المخزنية </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" color="light" >
+  <ion-list-header class="ion-margin-bottom">
+    <ion-label> قائمة المجموعات المخزنية </ion-label>
+  </ion-list-header>
+
+  <ion-item
+    class="ion-margin-bottom"
+    *ngFor="let item of itemGroups; let i = index"
+  >
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6" size-sm="6">
+          <ion-label class="recent">
+            <ion-chip color="success"> {{i + 1}} </ion-chip>
+            {{item.Name}}
+          </ion-label>
+        </ion-col>
+        <ion-col size="6" size-sm="6">
+          <ion-label class="recent">
+            <p>
+              رقم المجموعة :
+              <ion-chip color="tertiary"> {{item.Id}} </ion-chip>
+            </p>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-buttons class="ion-justify-content-center" >
+            <ion-button color="danger" (click)="deleteItem(item)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+            <ion-button
+              id="open-modal"
+              color="medium"
+              (click)="openModal(item)"
+            >
+              <ion-icon name="settings"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openPage()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-modal
+    #modal
+  >
+    <ng-template>
+
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="modal.dismiss()">الغاء  </ion-button>
+            </ion-buttons>
+          <ion-title>الاعدادات</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="SettingsSave()" [strong]="true" color="primary"
+              >حفظ</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list >
+          <ion-item  >
+            <ion-grid>
+              <ion-row>
+                <ion-col size="4">
+                  <ion-label class="recent">
+                    رقم :
+                    <ion-chip color="tertiary"> {{itemGroup.Id}} </ion-chip>
+                  </ion-label>
+                </ion-col>
+                <ion-col size="8">
+                  <ion-label class="recent">
+                    الاسم :
+                    <ion-chip color="tertiary" (click)="UpdateData('Name')">
+                      {{itemGroup.Name}}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="5">
+                  <ion-label class="recent">
+                    ترتيب :
+                    <ion-chip color="tertiary" (click)="UpdateData('Sort')">
+                      {{ itemGroup.Sort || 'فارغ' }}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+
+                <ion-col size="7">
+                  <ion-label class="recent">
+                    العملة :
+                    <ion-chip color="tertiary" (click)="UpdateData('Currency')">
+                      {{ ElooKup.NameCurrency }}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label class="recent">
+                    المجموعة الام :
+                    <ion-chip color="tertiary" (click)="UpdateData('Parent')">
+                      {{ ElooKup.NameParent }}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-label class="recent">
+                    صنف النظام :
+                    <ion-chip color="tertiary" (click)="UpdateData('Tarmeez')">
+                      {{ ElooKup.NameTarmeez|| 'فارغ' }}
+                      <ion-icon name="create-outline"></ion-icon>
+                    </ion-chip>
+                  </ion-label>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+          <ion-item class="recent" style="font-size: small;" >
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle (ionChange)="itemGroup.CostLessSale = !itemGroup.CostLessSale" [ngModel]="itemGroup.CostLessSale">  السماح بالبيع باقل من التكلفة</ion-toggle>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle
+                    (ionChange)="itemGroup.AllowNeg = !itemGroup.AllowNeg"
+                    [ngModel]="itemGroup.AllowNeg"
+                    >السماح بالكميات السلبية</ion-toggle
+                  >
+                </ion-col>
+                <ion-col size="12" size-sm="2">
+                  <ion-chip
+                    color="success"
+                    *ngIf="!itemGroup.AllowNegForAllItemGroup"
+                    (click)="UpdateData('AllowNegForAllItemGroup')"
+                  >
+                    <ion-label>تطبيق على جميع اصناف المجموعة</ion-label>
+                  </ion-chip>
+                  <ion-chip
+                    color="danger"
+                    *ngIf="itemGroup.AllowNegForAllItemGroup"
+                    (click)="UpdateData('AllowNegForAllItemGroup')"
+                  >
+                    <ion-label>الغاء التطبيق على جميع اصناف المجموعة</ion-label>
+
+                    <ion-icon name="close"></ion-icon>
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle>اكمل تلقائي عند كتابة اسم المجموعة</ion-toggle>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle (ionChange)="itemGroup.IsExpire = !itemGroup.IsExpire" [ngModel]="itemGroup.IsExpire"> استخدام تاريخ انتهاء</ion-toggle>
+                </ion-col>
+                <ion-col size="12" size-sm="2">
+                  <ion-chip color="success"   *ngIf="itemGroup.IsExpire&&!itemGroup.IsNotifyExp" (click)="UpdateData('IsNotifyExp')" >
+                    <ion-label> تنبية قبل تاريخ الانتهاء </ion-label>
+                  </ion-chip>
+    
+                  <ion-chip color="danger" *ngIf="itemGroup.IsExpire&&itemGroup.IsNotifyExp" (click)="itemGroup.IsNotifyExp=false">
+                    <ion-label>الغاء التنبية   </ion-label>
+                    <p>
+                      اليوم :
+                    {{itemGroup.ExpDay}} 
+                   </p>
+                   <p>
+                     الشهر :
+                     {{itemGroup.ExpMonth}}
+                   </p>
+                   <p>
+                     السنة :
+                     {{itemGroup.ExpYear}}
+                   </p>
+                    <ion-icon name="close"></ion-icon>
+                    
+                  </ion-chip>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle  (ionChange)="itemGroup.AvgCostAtCurrentVal = !itemGroup.AvgCostAtCurrentVal" [ngModel]="itemGroup.AvgCostAtCurrentVal">عرض التكاليف والشراء بسعر الصرف الحالي </ion-toggle>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle (ionChange)="itemGroup.IsScale = !itemGroup.IsScale" [ngModel]="itemGroup.IsScale">مجوعة ميزان </ion-toggle>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-toggle>جعل كل اصناف المجموعة اصناف ميزان </ion-toggle>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
