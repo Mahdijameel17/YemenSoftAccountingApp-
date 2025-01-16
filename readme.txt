@@ -16,9 +16,9 @@ The app is integrated with an API and includes additional functionalities:
 
 ### Project Links
 
-- ![Image 1](https://github.com/almgdshi123/AccountingApp-/blob/main/WhatsApp%20Image%202024-12-13%20at%205.00.50%20PM.jpeg)
-- ![Image 2](https://github.com/almgdshi123/AccountingApp-/blob/main/WhatsApp%20Image%202024-12-13%20at%205.00.50%20PM%20(5).jpeg)
-- ![Image 3](https://github.com/almgdshi123/AccountingApp-/blob/main/WhatsApp%20Image%202024-12-13%20at%205.00.50%20PM%20(1).jpeg)
-- ![Image 4](https://github.com/almgdshi123/AccountingApp-/blob/main/WhatsApp%20Image%202024-12-13%20at%205.00.50%20PM%20(3).jpeg)
-- ![Image 5](https://github.com/almgdshi123/AccountingApp-/blob/main/WhatsApp%20Image%202024-12-13%20at%205.00.50%20PM%20(4).jpeg)
+- [Image 1](https://github.com/almgdshi123/AccountingApp-/raw/main/WhatsApp%20Image%202024-12-13%20at%205.00.50%20PM.jpeg)
+- [Image 2](https://github.com/almgdshi123/AccountingApp-/raw/main/WhatsApp%20Image%202024-12-13%20at%205.00.50%20PM%20(5).jpeg)
+- [Image 3](https://github.com/almgdshi123/AccountingApp-/raw/main/WhatsApp%20Image%202024-12-13%20at%205.00.50%20PM%20(1).jpeg)
+- [Image 4](https://github.com/almgdshi123/AccountingApp-/raw/main/WhatsApp%20Image%202024-12-13%20at%205.00.50%20PM%20(3).jpeg)
+- [Image 5](https://github.com/almgdshi123/AccountingApp-/raw/main/WhatsApp%20Image%202024-12-13%20at%205.00.50%20PM%20(4).jpeg)
 
